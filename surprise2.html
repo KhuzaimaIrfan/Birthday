@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror of Memories</title>
+    <!-- Tailwind CSS CDN for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a custom font family for the entire page */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom CSS for the gradient background */
+        .gradient-background {
+            background-image: linear-gradient(135deg, #fce5f7, #e4e3fb);
+            min-height: 100vh;
+        }
+
+        /* Custom CSS for the gradient text effect */
+        .gradient-text {
+            background-image: linear-gradient(to right, #e879f9, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom CSS for the image slider effects */
+        .slider-image {
+            /* Smooth transition for hover effects and active state */
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            border-radius: 1.5rem; /* rounded-3xl in Tailwind */
+            border: 4px solid transparent; /* A transparent border to prevent layout shift */
+        }
+        
+        /* The container for the images, now scrollable and with a scroll-snap effect */
+        .image-scroll-container {
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            scroll-snap-type: x mandatory; /* Snap to a full element on scroll */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+        }
+        
+        /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+        .image-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Styles for the active (centered) image */
+        .slider-image.active {
+            filter: blur(0px) brightness(1);
+            transform: scale(1.15); /* Scale up the active image */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            z-index: 10;
+            border-color: #d8b4fe; /* Add a colored border to the active image */
+        }
+
+        /* Styles for inactive images */
+        .slider-image:not(.active) {
+            filter: blur(5px) brightness(0.6); /* Blur and dim inactive images */
+        }
+
+        /* Custom CSS for the "Download" button gradient */
+        .download-button-gradient {
+            background-image: linear-gradient(to right, #ff4c94, #e879f9);
+        }
+    </style>
+    <!-- Load the Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+</head>
+<body class="gradient-background flex flex-col items-center justify-between p-4 min-h-screen text-gray-800">
+
+    <!-- Container for the entire layout -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center justify-between h-full">
+
+        <!-- Top Header/Title Section -->
+        <header class="w-full flex justify-between items-center py-4 px-8 md:px-0">
+            <!-- Heart Icon - Left -->
+            <svg class="h-6 w-6 text-pink-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+            
+            <!-- Main Title with Gradient Text -->
+            <h1 class="text-4xl md:text-5xl font-bold gradient-text text-center">Mirror of Memories</h1>
+            
+            <!-- Music Note Icon - Right -->
+            <svg class="h-6 w-6 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4H8a1 1 0 000 2h3a1 1 0 100-2zm0-4H8a1 1 0 100 2h3a1 1 0 100-2zm0-4H8a1 1 0 100 2h3a1 1 0 100-2z" clip-rule="evenodd"></path>
+            </svg>
+        </header>
+
+        <!-- Main Content Area with Slider -->
+        <main class="flex-grow flex flex-col items-center justify-center w-full px-4 sm:px-0">
+            <!-- Slider Container -->
+            <div id="slider-container" class="relative flex items-center justify-center py-12 md:py-24 w-full">
+                
+                <!-- Navigation Arrows -->
+                <button id="prev-btn" class="absolute -left-4 md:-left-8 top-1/2 transform -translate-y-1/2 p-2 rounded-full border border-pink-500 bg-white shadow-md z-20 focus:outline-none">
+                    <span class="block w-4 h-0.5 bg-pink-500"></span>
+                </button>
+                <button id="next-btn" class="absolute -right-4 md:-right-8 top-1/2 transform -translate-y-1/2 p-2 rounded-full border border-pink-500 bg-white shadow-md z-20 focus:outline-none">
+                    <span class="block w-4 h-0.5 bg-pink-500"></span>
+                </button>
+
+                <!-- Heart icons floating around the slider -->
+                <svg class="h-5 w-5 absolute top-1/4 left-1/4 text-pink-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+                <svg class="h-5 w-5 absolute bottom-1/4 right-1/4 text-pink-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+
+                <!-- The images for the slider. Now in a scrollable container. -->
+                <div id="image-scroll-container" class="image-scroll-container flex space-x-8 lg:space-x-12 px-4 md:px-8 w-full overflow-x-auto snap-x snap-mandatory">
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5916.jpg" alt="Memory 7" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_6028.jpg" alt="Memory 13" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5960.jpg" alt="Memory 9" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_6003.jpg" alt="Memory 11" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5974.jpg" alt="Memory 10" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5918.jpg" alt="Memory 8" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_6024.jpg" alt="Memory 12" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5902.jpg" alt="Memory 6" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5762.PNG" alt="Memory 4" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5451.JPG" alt="Memory 2" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_6534.jpg" alt="Memory 14" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_6535.jpg" alt="Memory 15" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_5693.JPG" alt="Memory 3" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                    <div class="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 flex-grow-0 snap-center flex justify-center">
+                         <img src="./Images/IMG_4815.JPG" alt="Memory 1" class="slider-image w-72 h-auto object-cover rounded-3xl" />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Caption for the active image -->
+            <div id="caption-container" class="relative">
+                 <p class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm font-light z-10 hidden"></p>
+            </div>
+
+            <!-- "Download" Button -->
+            <button id="download-btn" class="mt-8 px-6 py-3 rounded-full download-button-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center space-x-2">
+                <!-- Heart SVG -->
+                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Download this memory</span>
+            </button>
+        </main>
+        
+        <!-- Bottom section with "Next Page" button -->
+        <footer class="w-full flex justify-end mt-8">
+            <button class="px-6 py-3 rounded-full download-button-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                <span>Next Page</span>
+                <!-- Right Arrow SVG -->
+                <svg class="inline-block h-4 w-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </button>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageContainer = document.getElementById('image-scroll-container');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const caption = document.querySelector('#caption-container p');
+            
+            // The data for the images and their captions
+            const imageDetails = [
+                { src: './Images/IMG_5916.jpg', alt: 'Memory 7',},
+                { src: './Images/IMG_6028.jpg', alt: 'Memory 13',},
+                { src: './Images/IMG_5960.jpg', alt: 'Memory 9',},
+                { src: './Images/IMG_6003.jpg', alt: 'Memory 11',},
+                { src: './Images/IMG_5974.jpg', alt: 'Memory 10',},
+                { src: './Images/IMG_5918.jpg', alt: 'Memory 8',},
+                { src: './Images/IMG_6024.jpg', alt: 'Memory 12',},
+                { src: './Images/IMG_5902.jpg', alt: 'Memory 6',},
+                { src: './Images/IMG_5762.PNG', alt: 'Memory 4',},
+                { src: './Images/IMG_5451.JPG', alt: 'Memory 2',},
+                { src: './Images/IMG_6534.jpg', alt: 'Memory 14',},
+                { src: './Images/IMG_6535.jpg', alt: 'Memory 15',},
+                { src: './Images/IMG_5693.JPG', alt: 'Memory 3',},
+                { src: './Images/IMG_4815.JPG', alt: 'Memory 1',},
+
+            ];
+
+            let activeIndex = 0; // The active index now starts at the first image (index 0)
+
+            /**
+             * Updates the slider's appearance based on the active image index.
+             */
+            const updateSlider = () => {
+                const images = document.querySelectorAll('.slider-image');
+                images.forEach((img, index) => {
+                    img.classList.remove('active');
+                    if (index === activeIndex) {
+                        img.classList.add('active');
+                        // Scroll to center the active image
+                        img.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                        // Update the caption
+                        caption.textContent = imageDetails[index].caption;
+                        caption.classList.remove('hidden');
+                    }
+                });
+            };
+
+            /**
+             * Handles the previous button click.
+             */
+            const showPrev = () => {
+                activeIndex = (activeIndex - 1 + imageDetails.length) % imageDetails.length;
+                updateSlider();
+            };
+
+            /**
+             * Handles the next button click.
+             */
+            const showNext = () => {
+                activeIndex = (activeIndex + 1) % imageDetails.length;
+                updateSlider();
+            };
+
+            // Event listeners for the buttons
+            prevBtn.addEventListener('click', showPrev);
+            nextBtn.addEventListener('click', showNext);
+            
+            // Event listener for keyboard navigation (left and right arrow keys)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    showPrev();
+                } else if (e.key === 'ArrowRight') {
+                    showNext();
+                }
+            });
+
+            // Event listener for clicking on images to make them active
+            imageContainer.addEventListener('click', (e) => {
+                const clickedImage = e.target.closest('.slider-image');
+                if (clickedImage) {
+                    const images = document.querySelectorAll('.slider-image');
+                    const newIndex = Array.from(images).indexOf(clickedImage);
+                    if (newIndex !== -1) {
+                        activeIndex = newIndex;
+                        updateSlider();
+                    }
+                }
+            });
+
+            // Initial call to set up the slider
+            updateSlider();
+        });
+    </script>
+</body>
+</html>

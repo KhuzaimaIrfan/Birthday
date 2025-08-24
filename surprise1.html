@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday My Love</title>
+  <meta name="description" content="A romantic, responsive birthday surprise landing page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#fde7ee; /* very light pink */
+      --bg-2:#fbd6e3; /* light blush */
+      --card:#ffffffee;
+      --text:#7a065c;
+      --text-soft:#a0206e;
+      --btn:#ff6b8a;
+      --btn-dark:#e75374;
+      --shadow: 0 10px 35px rgba(255, 105, 135, .25);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% -10%, #fff, transparent 60%),
+                  radial-gradient(900px 600px at 100% 10%, #fff, transparent 55%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: clamp(16px, 3vw, 32px);
+    }
+
+    .wrap{
+      width:min(1100px, 100%);
+    }
+
+    .card{
+      position:relative;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,.05), var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      padding: clamp(20px, 4vw, 64px);
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    /* subtle rays */
+    .card::before{
+      content:"";
+      position:absolute; inset:-30% -10% auto -10%;
+      height: 120%;
+      background: conic-gradient(from 0deg, rgba(255,105,135,.13), rgba(255,105,135,0) 25%);
+      transform: rotate(-8deg);
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    .title{
+      font-family:'Great Vibes', cursive;
+      font-size: clamp(32px, 6vw, 72px);
+      line-height: 1.1;
+      margin: 0 0 .35em;
+      text-align:center;
+      color: var(--text);
+      text-shadow: 0 8px 28px rgba(255,105,135,.35);
+      filter: drop-shadow(0 8px 18px rgba(255,105,135,.25));
+    }
+
+    .icons{
+      display:flex; gap:18px; align-items:center; justify-content:center;
+      margin: 0 0 1.25rem;
+      opacity:.9;
+    }
+    .icons span{ font-size: clamp(24px, 4vw, 36px); filter: drop-shadow(0 6px 10px rgba(255,105,135,.3)); }
+
+    .subtitle{
+      text-align:center; 
+      font-weight:600; 
+      font-size:clamp(16px, 2.6vw, 28px);
+      color: var(--text-soft);
+      margin: 0 0 1rem;
+    }
+
+    .quote{
+      text-align:center;
+      font-size: clamp(14px, 2vw, 20px);
+      color: #ad2a78;
+      font-weight: 500;
+      max-width: 900px;
+      margin: 0 auto 2rem;
+    }
+
+    .cta{
+      display:flex; justify-content:center; margin-top: clamp(12px, 2.5vw, 28px);
+    }
+
+    .btn{
+      --padY: clamp(12px, 1.8vw, 20px);
+      --padX: clamp(22px, 4vw, 46px);
+      appearance:none; border:0; cursor:pointer; white-space:nowrap;
+      padding: var(--padY) var(--padX);
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--btn), var(--btn-dark));
+      color:#fff; font-weight:700; letter-spacing:.3px; font-size: clamp(14px, 2.2vw, 20px);
+      box-shadow: var(--shadow), 0 8px 18px rgba(231, 83, 116, .25);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:focus{ outline: 3px solid #ffd1dc; outline-offset: 4px; }
+    .btn:hover{ transform: translateY(-2px); filter: brightness(1.04); box-shadow: 0 12px 34px rgba(231, 83, 116, .35); }
+    .btn:active{ transform: translateY(0); box-shadow: var(--shadow); }
+
+    /* Floating hearts animation */
+    .floaters{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .heart{ position:absolute; bottom:-40px; font-size: 18px; opacity: .85; animation: rise 6s linear infinite; filter: drop-shadow(0 6px 10px rgba(255,105,135,.4)); }
+    @keyframes rise{
+      0% { transform: translateY(0) scale(1); opacity:.0; }
+      10%{ opacity:.9; }
+      100%{ transform: translateY(-120vh) scale(1.15); opacity:0; }
+    }
+
+    /* Footer note */
+    .note{ text-align:center; margin-top: 18px; font-size: 12px; color:#9b3f7c; }
+
+    /* Responsive helper section (optional surprise area) */
+    .surprise{ 
+      margin-top: clamp(22px, 4vw, 40px);
+      background: #fff6fa;
+      border: 1px dashed #ffc1d1;
+      padding: clamp(14px, 2.5vw, 22px);
+      border-radius: 16px;
+      display:none;
+      text-align:center;
+    }
+
+    .surprise.show{ display:block; }
+    .surprise h3{ margin:0 0 .25rem; font-size: clamp(18px, 2.4vw, 24px); }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .heart{ animation: none; }
+      .btn{ transition: none; }
+      .card::before{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-labelledby="page-title">
+      <!-- floating emoji hearts -->
+      <div class="floaters" aria-hidden="true" id="floaters"></div>
+
+      <h1 id="page-title" class="title">Happy Birthday My Love!</h1>
+
+      <div class="icons" aria-hidden="true">
+        <span>💗</span>
+        <span>✨</span>
+      </div>
+
+      <p class="subtitle">To the most amazing woman in my life my begum Lizaaa</p>
+      <p class="quote"><em>“Every moment with you is a gift, and today we celebrate the greatest gift of all – <strong>YOU</strong>! 🌹”</em></p>
+
+      <div class="cta">
+        <button class="btn" id="startBtn" type="button">Begin Your Surprise! 💖</button>
+      </div>
+
+      <div id="surprise" class="surprise" role="region" aria-live="polite" aria-label="Birthday Surprise">
+        <h3>🎉 Your Surprise Is Here!</h3>
+        <p>Turn up the volume and check your messages — a special note, a memory reel, and a little plan for tonight are waiting for you. 💌✨</p>
+        <div class="cta">
+        <button class="btn" id="startBtn" type="button">Our best days together (<a href="C:\Users\CC\OneDrive\Desktop\Birthday\surprise2.html"><b>Click Here</b></a>) 💖
+
+        </button>
+        </div>
+      </div>
+        </section>
+  </main>
+
+  <script>
+    // Floating hearts generator
+    const floaters = document.getElementById('floaters');
+    const EMOJIS = ['💗','💖','💕','💓','💞','💘'];
+
+    function spawnHeart(){
+      const span = document.createElement('span');
+      span.className = 'heart';
+      span.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      span.style.left = Math.random()*100 + 'vw';
+      span.style.animationDuration = (5 + Math.random()*4) + 's';
+      span.style.fontSize = (16 + Math.random()*22) + 'px';
+      floaters.appendChild(span);
+      // remove after animation cycle to avoid DOM bloat
+      setTimeout(() => span.remove(), 10000);
+    }
+
+    // Reduce motion check
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!prefersReduced){
+      setInterval(spawnHeart, 600);
+      // spawn a few at load
+      for(let i=0;i<10;i++) setTimeout(spawnHeart, i*120);
+    }
+
+    // CTA reveal
+    const btn = document.getElementById('startBtn');
+    const surprise = document.getElementById('surprise');
+    btn.addEventListener('click', () => {
+      surprise.classList.toggle('show');
+      btn.textContent = surprise.classList.contains('show')
+        ? 'Hide Surprise 💘'
+        : 'Begin Your Surprise! 💖';
+    });
+  </script>
+</body>
+</html>
